@@ -3,25 +3,27 @@ package fr.esiea.ex4A.entity;
 
 
 public class Match {
-    private final String userName;
-    private final int userAge;
-    private final int userCount;
+    private final String name;
+    private final String twitter;
 
-    public Match(String userName, int userAge, int userCount) {
-        this.userName = userName;
-        this.userAge = userAge;
-        this.userCount = userCount;
+    public Match(String userName, String twitter) {
+        this.name = userName;
+        this.twitter = twitter;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public int getUserAge() {
-        return userAge;
+    public String getTwitter() {
+        return twitter;
     }
 
-    public int getUserCount() {
-        return userCount;
+    @Override
+    public String toString() {
+        return "Match{" +
+                "name='" + name + '\'' +
+                ", twitter='" + twitter + '\'' +
+                '}';
     }
 }

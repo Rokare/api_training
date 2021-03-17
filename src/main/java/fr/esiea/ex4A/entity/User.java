@@ -9,26 +9,26 @@ import java.util.Optional;
 public class User {
     private final String userEmail;
     private final String userName;
-    private final String userTweeter;
+    private final String userTwitter;
     private final String userCountry;
     private final Sex userSex;
     private final Sex userSexPref;
     private final Optional<Integer> age;
 
     private enum Sex {
-        F("F"),
-        M("M"),
-        O("");
 
+        F("F"),
+        H("H"),
+        O("O");
         Sex(String f) {}
     }
 
     public User(@NotEmpty @JsonProperty("userEmail") String userEmail, @NotEmpty @JsonProperty("userName") String userName,
-                @NotEmpty @JsonProperty("userTweeter") String userTweeter, @NotEmpty @JsonProperty("userCountry") String userCountry,
+                @NotEmpty @JsonProperty("userTwitter") String userTwitter, @NotEmpty @JsonProperty("userCountry") String userCountry,
                 @JsonProperty("userSex") String userSex, @JsonProperty("userSexPref") String userSexPref) {
         this.userEmail = userEmail;
         this.userName = userName;
-        this.userTweeter = userTweeter;
+        this.userTwitter = userTwitter;
         this.userCountry = userCountry;
         this.userSex = Sex.valueOf(userSex);
         this.userSexPref = Sex.valueOf(userSexPref);
@@ -38,7 +38,7 @@ public class User {
     public User(User user, int age) {
         this.userEmail = user.userEmail;
         this.userName = user.userName;
-        this.userTweeter = user.userTweeter;
+        this.userTwitter = user.userTwitter;
         this.userCountry = user.userCountry;
         this.userSex = user.userSex;
         this.userSexPref = user.userSexPref;
@@ -52,8 +52,8 @@ public class User {
         return userName;
     }
 
-    public String getUserTweeter() {
-        return userTweeter;
+    public String getUserTwitter() {
+        return userTwitter;
     }
 
     public String getUserCountry() {
@@ -70,5 +70,18 @@ public class User {
 
     public Optional<Integer> getAge() {
         return age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userEmail='" + userEmail + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userTweeter='" + userTwitter + '\'' +
+                ", userCountry='" + userCountry + '\'' +
+                ", userSex=" + userSex +
+                ", userSexPref=" + userSexPref +
+                ", age=" + age +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package fr.esiea.ex4A.controller;
 
+import fr.esiea.ex4A.entity.Match;
 import fr.esiea.ex4A.service.AgifyService;
 import fr.esiea.ex4A.entity.User;
 import fr.esiea.ex4A.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,18 +28,24 @@ public class AgifyController {
     @PostMapping(path = "/inscription")
     ResponseEntity<Object> signUp(@RequestBody @Validated User user) {
         int age = agifyService.getAge(user.getUserName(), user.getUserCountry());
-        if(userService.addUser(new User(user, age)))
+        if (userService.getUser(user.getUserName()) == null) {
+            userService.addUser(new User(user, age));
             return ResponseEntity.status(201).body(user);
-        return ResponseEntity.status(404).body("Page not Found");
+        } else {
+            return ResponseEntity.status(409).body("User already exists with this username");
+        }
     }
 
     @GetMapping(path = "/matches", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Object> checkMatches(@RequestParam(name = "userName") String userName,
         @RequestParam(name = "userCountry") String userCountry) {
         int age = userService.getUser(userName).getAge().get();
-        List<User> listUser = userService.getAllUsers().stream().filter(x -> x.getAge().get() <= age -4 || x.getAge().get() >= age + 4 ).collect(Collectors.toList());
-        if(!listUser.isEmpty())
-            return ResponseEntity.status(200).body(listUser);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not Found");
+        List<User> listUsers = userService.getAllUsers().stream().filter(x -> x.getAge().get() <= age + 4 && x.getAge().get() >= age - 4 && !x.getUserName().equals(userName)).collect(Collectors.toList());
+        List<Match> listMatches = new ArrayList<>();
+        listUsers.forEach(x -> listMatches.add(new Match(x.getUserName(), x.getUserTwitter())));
+        if(!listMatches.isEmpty()) {
+            return ResponseEntity.status(200).body(listMatches);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Match not Found");
     }
 }
