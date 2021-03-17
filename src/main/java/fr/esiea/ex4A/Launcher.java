@@ -1,7 +1,7 @@
 /* (C)2021 */
 package fr.esiea.ex4A;
 
-import fr.esiea.ex4A.agify.AgifyService;
+import fr.esiea.ex4A.agify.AgifyClient;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,8 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @SpringBootApplication
 public class Launcher {
-    @Bean(name = "AgifyService")
-    public AgifyService agifyClient() {
+    @Bean
+    public AgifyClient agifyClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit =
                 new Retrofit.Builder()
@@ -21,7 +21,7 @@ public class Launcher {
                         .client(httpClient.build())
                         .build();
 
-        return retrofit.create(AgifyService.class);
+        return retrofit.create(AgifyClient.class);
     }
 
     public static void main(String[] args) {

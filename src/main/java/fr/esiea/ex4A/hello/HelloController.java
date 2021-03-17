@@ -1,7 +1,7 @@
 /* (C)2021 */
 package fr.esiea.ex4A.hello;
 
-import fr.esiea.ex4A.agify.AgifyService;
+import fr.esiea.ex4A.agify.AgifyClient;
 import fr.esiea.ex4A.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,12 +14,12 @@ class HelloController {
 
     @Autowired private UserRepository userRepository;
 
-    private final AgifyService agifyService;
+    private final AgifyClient agifyClient;
 
     private final HelloRepository helloRepository;
 
-    HelloController(AgifyService agifyService, HelloRepository helloRepository) {
-        this.agifyService = agifyService;
+    HelloController(AgifyClient agifyClient, HelloRepository helloRepository) {
+        this.agifyClient = agifyClient;
         this.helloRepository = helloRepository;
     }
 

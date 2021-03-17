@@ -8,5 +8,8 @@ import java.util.ArrayList;
 
 @Service
 public class UserRepository {
-    public ArrayList<User> users = new ArrayList<>();
+    private final ArrayList<User> users = new ArrayList<>();
+    public ArrayList<User> getUserRepository(){
+        return this.users;
+    }
 }
