@@ -1,8 +1,6 @@
 /* (C)2021 */
 package fr.esiea.ex4A;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import fr.esiea.ex4A.agify.AgifyService;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.SpringApplication;
@@ -16,11 +14,10 @@ public class Launcher {
     @Bean(name = "AgifyService")
     public AgifyService agifyClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit =
                 new Retrofit.Builder()
                         .baseUrl("https://api.agify.io")
-                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .addConverterFactory(GsonConverterFactory.create())
                         .client(httpClient.build())
                         .build();
 
