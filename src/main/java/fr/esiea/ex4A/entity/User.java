@@ -15,7 +15,7 @@ public class User {
     private final Sex userSexPref;
     private final Optional<Integer> age;
 
-    private enum Sex {
+    public enum Sex {
 
         F("F"),
         H("H"),

@@ -1,8 +1,8 @@
 package fr.esiea.ex4A.controller;
 
 import fr.esiea.ex4A.entity.Match;
-import fr.esiea.ex4A.service.AgifyService;
 import fr.esiea.ex4A.entity.User;
+import fr.esiea.ex4A.service.AgifyService;
 import fr.esiea.ex4A.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,11 @@ public class AgifyController {
     ResponseEntity<Object> checkMatches(@RequestParam(name = "userName") String userName,
         @RequestParam(name = "userCountry") String userCountry) {
         int age = userService.getUser(userName).getAge().get();
-        List<User> listUsers = userService.getAllUsers().stream().filter(x -> x.getAge().get() <= age + 4 && x.getAge().get() >= age - 4 && !x.getUserName().equals(userName)).collect(Collectors.toList());
+        User.Sex sexPref = userService.getUser(userName).getUserSexPref();
+        List<User> listUsers = userService.getAllUsers().stream()
+                .filter(x -> x.getAge().get() <= age + 4 && x.getAge().get() >= age - 4
+                        && !x.getUserName().equals(userName) && x.getUserSex() == sexPref)
+                .collect(Collectors.toList());
         List<Match> listMatches = new ArrayList<>();
         listUsers.forEach(x -> listMatches.add(new Match(x.getUserName(), x.getUserTwitter())));
         if(!listMatches.isEmpty()) {
