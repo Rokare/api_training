@@ -1,5 +1,6 @@
 package fr.esiea.ex4A.controller;
 
+import fr.esiea.ex4A.agify.AgifyResponse;
 import fr.esiea.ex4A.entity.Match;
 import fr.esiea.ex4A.entity.User;
 import fr.esiea.ex4A.service.AgifyService;
@@ -27,7 +28,12 @@ public class AgifyController {
     }
     @PostMapping(path = "/inscription")
     public ResponseEntity<Object> signUp(@RequestBody @Validated User user) {
-        int age = agifyService.getAge(user.getUserName(), user.getUserCountry());
+        int age = 0;
+        AgifyResponse agifyResponse = agifyService.getResponseService().getResponse(user.getUserName(), user.getUserCountry());
+        if (agifyResponse == null)
+            age = agifyService.getAge(user.getUserName(), user.getUserCountry());
+        else
+            age = agifyResponse.getAge();
         if (userService.getUser(user.getUserName()) == null) {
             User completeUser = new User(user, age);
             userService.addUser(completeUser);

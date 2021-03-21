@@ -1,6 +1,7 @@
 package fr.esiea.ex4A.service;
 
 import fr.esiea.ex4A.agify.AgifyClient;
+import fr.esiea.ex4A.repository.ResponseRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import retrofit2.Retrofit;
@@ -18,7 +19,7 @@ class AgifyServiceTest {
     }
     @Test
     void getAge() {
-        AgifyService service = new AgifyService(createClient("https://api.agify.io"));
+        AgifyService service = new AgifyService(createClient("https://api.agify.io"), new ResponseService(new ResponseRepository()));
         int expectedAge = 25;
         String username = "Maxime";
         String countryId = "FR";
