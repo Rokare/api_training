@@ -31,9 +31,9 @@ public class AgifyController {
         if (userService.getUser(user.getUserName()) == null) {
             User completeUser = new User(user, age);
             userService.addUser(completeUser);
-            return ResponseEntity.status(201).body(completeUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body(completeUser);
         } else {
-            return ResponseEntity.status(409).body("User already exists with this username");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists with this username");
         }
     }
 
@@ -44,7 +44,7 @@ public class AgifyController {
         User.Sex sexPref = userService.getUser(userName).getUserSexPref();
         List<User> listUsers = userService.getAllUsers().stream()
                 .filter(x -> x.getAge().get() <= age + 4 && x.getAge().get() >= age - 4
-                        && !x.getUserName().equals(userName) && x.getUserSex() == sexPref)
+                        && !x.getUserName().equals(userName) && x.getUserSex().equals(sexPref))
                 .collect(Collectors.toList());
         List<Match> listMatches = new ArrayList<>();
         listUsers.forEach(x -> listMatches.add(new Match(x.getUserName(), x.getUserTwitter())));

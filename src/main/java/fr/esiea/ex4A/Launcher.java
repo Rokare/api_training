@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @SpringBootApplication
 public class Launcher {
     @Bean
-    public AgifyClient agifyClient() {
+    AgifyClient agifyClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit =
                 new Retrofit.Builder()
