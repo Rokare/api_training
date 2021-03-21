@@ -1,10 +1,12 @@
 package fr.esiea.ex4A.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.esiea.ex4A.entity.Match;
 import fr.esiea.ex4A.entity.User;
-import fr.esiea.ex4A.service.AgifyService;
 import fr.esiea.ex4A.service.UserService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,12 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AgifyControllerIT {
     private final MockMvc mockMvc;
     @MockBean
-    private AgifyService agifyService;
-    @MockBean
     private UserService userService;
-    @MockBean
-    private AgifyController agifyControllerMock;
-    AgifyControllerIT(@Autowired MockMvc mockMvc ) {
+    @Mock
+    AgifyController agifyControllerMock;
+    AgifyControllerIT(@Autowired MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
@@ -40,6 +43,7 @@ public class AgifyControllerIT {
     void signUp() throws Exception {
         User user = new User("test@test.com", "test","test","FR", "F", "F");
         when(agifyControllerMock.signUp(any(User.class))).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(user));
+        userService.addUser(user);
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/api/inscription")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -56,7 +60,9 @@ public class AgifyControllerIT {
                             "userSexPref":"F"
                         }
                         """));
+        verify(userService,times(1)).addUser(any(User.class));
     }
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -65,6 +71,31 @@ public class AgifyControllerIT {
         }
     }
     @Test
-    void checkMatches() {
+    void checkMatches() throws Exception {
+        ArrayList<User> listUser = new ArrayList<>();
+        listUser.add(new User(new User("test@test.com", "test","test","FR", "F", "F"), 25));
+        listUser.add(new User(new User("test2@test2.com", "test2","test2","FR", "F", "F"), 27));
+        listUser.add(new User(new User("test3@test3.com", "test3","test3","FR", "F", "F"), 24));
+
+        when(userService.getAllUsers()).thenReturn(listUser);
+        when(userService.getUser(any(String.class))).thenReturn(new User(new User("test@test.com", "test","test","FR", "F", "F"), 25));
+        when(agifyControllerMock.checkMatches("test", "FR")).thenReturn(ResponseEntity.status(HttpStatus.ACCEPTED).body(List.of(new Match("test2", "test2"))));
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/matches?userName=test&userCountry=FR"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [
+                            {
+                                "name":"test2",
+                                "twitter":"test2"
+                            },
+                            {
+                                "name":"test3",
+                                "twitter":"test3"
+                            }
+                        ]
+                        """));
+
+        Assertions.assertEquals(userService.getAllUsers().size(),3);
     }
 }

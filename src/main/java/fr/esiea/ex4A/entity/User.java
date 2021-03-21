@@ -4,7 +4,6 @@ package fr.esiea.ex4A.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.validation.constraints.NotEmpty;
 import java.util.Optional;
 
@@ -19,7 +18,6 @@ public class User {
     private final Optional<Integer> age;
 
     public enum Sex {
-
         F("F"),
         H("H"),
         O("O");
@@ -37,7 +35,6 @@ public class User {
         this.userSexPref = Sex.valueOf(userSexPref);
         this.age = Optional.empty();
     }
-
     public User(User user, int age) {
         this.userEmail = user.userEmail;
         this.userName = user.userName;
@@ -50,31 +47,24 @@ public class User {
     public String getUserEmail() {
         return userEmail;
     }
-
     public String getUserName() {
         return userName;
     }
-
     public String getUserTwitter() {
         return userTwitter;
     }
-
     public String getUserCountry() {
         return userCountry;
     }
-
     public Sex getUserSex() {
         return userSex;
     }
-
     public Sex getUserSexPref() {
         return userSexPref;
     }
-
     public Optional<Integer> getAge() {
         return age;
     }
-
 
     @Override
     public String toString() {
