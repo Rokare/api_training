@@ -43,7 +43,6 @@ public class AgifyControllerIT {
     void signUp() throws Exception {
         User user = new User("test@test.com", "test","test","FR", "F", "F");
         when(agifyControllerMock.signUp(any(User.class))).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(user));
-        userService.addUser(user);
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/api/inscription")
                 .contentType(MediaType.APPLICATION_JSON)
