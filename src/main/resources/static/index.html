@@ -81,11 +81,26 @@
         var xhr = new XMLHttpRequest();
         xhr.open(form.method, form.action, true);
         xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        xhr.onreadystatechange = () => {
-            document.location.href = "/home.html?name=" + encodeURIComponent(formData.userName) + "&country=" + encodeURIComponent(formData.userCountry);
+        xhr.onload = function (e) {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 201) {
+                    console.log(xhr.responseText);
+                    window.setTimeout(redirect, 2000);
+                } else {
+                    console.error(xhr.statusText);
+                }
+            }
         };
-        xhr.send(JSON.stringify(formData));
 
+        function redirect() {
+            document.location.href = "/home.html?name=" + encodeURIComponent(formData.userName) + "&country=" + encodeURIComponent(formData.userCountry);
+        }
+        // xhr.onreadystatechange = () => {
+        //     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 201) {
+        //         document.location.href = "/home.html?name=" + encodeURIComponent(formData.userName) + "&country=" + encodeURIComponent(formData.userCountry);
+        //     }
+        // };
+        xhr.send(JSON.stringify(formData));
     }
 
     document.getElementById('inscription').onsubmit = function() {

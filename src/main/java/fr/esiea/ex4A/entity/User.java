@@ -1,6 +1,8 @@
 /* (C)2021 */
 package fr.esiea.ex4A.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +15,7 @@ public class User {
     private final String userCountry;
     private final Sex userSex;
     private final Sex userSexPref;
+    @JsonIgnore
     private final Optional<Integer> age;
 
     public enum Sex {
@@ -22,7 +25,7 @@ public class User {
         O("O");
         Sex(String f) {}
     }
-
+    @JsonCreator
     public User(@NotEmpty @JsonProperty("userEmail") String userEmail, @NotEmpty @JsonProperty("userName") String userName,
                 @NotEmpty @JsonProperty("userTwitter") String userTwitter, @NotEmpty @JsonProperty("userCountry") String userCountry,
                 @JsonProperty("userSex") String userSex, @JsonProperty("userSexPref") String userSexPref) {

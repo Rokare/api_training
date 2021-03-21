@@ -11,11 +11,15 @@ class UserServiceTest {
     private final UserService userService = new UserService(new UserRepository());
     @Test
     void addUser() {
-
         String username = "test";
         User user = new User("test@test.com", username, "test","FR", "F", "F");
-        
         Assertions.assertTrue(userService.addUser(user));
+    }
+    @Test
+    void getUser() {
+        String username = "test";
+        User user = new User("test@test.com", username, "test","FR", "F", "F");
+        userService.addUser(user);
         Assertions.assertEquals(userService.getUser(username), user);
     }
 
@@ -31,4 +35,6 @@ class UserServiceTest {
 
         Assertions.assertEquals(userService.getAllUsers(), listUsers);
     }
+
+
 }

@@ -26,11 +26,12 @@ public class AgifyController {
         this.agifyService = agifyService;
     }
     @PostMapping(path = "/inscription")
-    ResponseEntity<Object> signUp(@RequestBody @Validated User user) {
+    public ResponseEntity<Object> signUp(@RequestBody @Validated User user) {
         int age = agifyService.getAge(user.getUserName(), user.getUserCountry());
         if (userService.getUser(user.getUserName()) == null) {
-            userService.addUser(new User(user, age));
-            return ResponseEntity.status(201).body(user);
+            User completeUser = new User(user, age);
+            userService.addUser(completeUser);
+            return ResponseEntity.status(201).body(completeUser);
         } else {
             return ResponseEntity.status(409).body("User already exists with this username");
         }
