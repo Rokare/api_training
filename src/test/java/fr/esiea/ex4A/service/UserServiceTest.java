@@ -13,13 +13,13 @@ class UserServiceTest {
     void addUser() {
         String username = "test";
         User user = new User("test@test.com", username, "test","FR", "F", "F");
-        Assertions.assertTrue(userService.addUser(user));
+        Assertions.assertTrue(userService.getAllUsers().add(user));
     }
     @Test
     void getUser() {
         String username = "test";
         User user = new User("test@test.com", username, "test","FR", "F", "F");
-        userService.addUser(user);
+        userService.getAllUsers().add(user);
         Assertions.assertEquals(userService.getUser(username), user);
     }
 
@@ -30,8 +30,8 @@ class UserServiceTest {
         List<User> listUsers = List.of(
                 user1,user2
         );
-        userService.addUser(user1);
-        userService.addUser(user2);
+        userService.getAllUsers().add(user1);
+        userService.getAllUsers().add(user2);
 
         Assertions.assertEquals(userService.getAllUsers(), listUsers);
     }

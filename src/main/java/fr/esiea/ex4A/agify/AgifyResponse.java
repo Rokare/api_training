@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-@Data
 public class AgifyResponse {
 
     private final String name;
@@ -24,5 +23,21 @@ public class AgifyResponse {
         this.age = age;
         this.count = count;
         this.country_id = country_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public String getCountry_id() {
+        return country_id;
     }
 }

@@ -34,24 +34,18 @@ public class AgifyController {
             age = agifyService.getAge(user.getUserName(), user.getUserCountry());
         else
             age = agifyResponse.getAge();
-        if (userService.getUser(user.getUserName()) == null) {
-            User completeUser = new User(user, age);
-            userService.addUser(completeUser);
+        User completeUser = new User(user, age);
+        if(userService.getAllUsers().add(completeUser)) {
             return ResponseEntity.status(HttpStatus.CREATED).body(completeUser);
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists with this username");
         }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists with this username");
     }
 
     @GetMapping(path = "/matches", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Object> checkMatches(@RequestParam(name = "userName") String userName,
-        @RequestParam(name = "userCountry") String userCountry) {
+    ResponseEntity<Object> checkMatches(@RequestParam(name = "userName") String userName, @RequestParam(name = "userCountry") String userCountry) {
         int age = userService.getUser(userName).getAge().get();
         User.Sex sexPref = userService.getUser(userName).getUserSexPref();
-        List<User> listUsers = userService.getAllUsers().stream()
-                .filter(x -> x.getAge().get() <= age + 4 && x.getAge().get() >= age - 4
-                        && !x.getUserName().equals(userName) && x.getUserSex().equals(sexPref))
-                .collect(Collectors.toList());
+        List<User> listUsers = userService.getMatchUsers(userName, age, sexPref);
         List<Match> listMatches = new ArrayList<>();
         listUsers.forEach(x -> listMatches.add(new Match(x.getUserName(), x.getUserTwitter())));
         if(!listMatches.isEmpty()) {
