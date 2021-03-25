@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,6 +43,7 @@ public class AgifyControllerIT {
     @Test
     void signUp() throws Exception {
         User user = new User("test@test.com", "test","test","FR", "F", "F");
+        ArrayList<User> list = new ArrayList<>(Arrays.asList(user));
         when(agifyControllerMock.signUp(any(User.class))).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(user));
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/api/inscription")
@@ -59,7 +61,7 @@ public class AgifyControllerIT {
                             "userSexPref":"F"
                         }
                         """));
-        verify(userService,times(1)).addUser(any(User.class));
+        verify(userService,times(1)).getAllUsers();
     }
 
     public static String asJsonString(final Object obj) {
@@ -71,14 +73,14 @@ public class AgifyControllerIT {
     }
     @Test
     void checkMatches() throws Exception {
-        ArrayList<User> listUser = new ArrayList<>();
-        listUser.add(new User(new User("test@test.com", "test","test","FR", "F", "F"), 25));
-        listUser.add(new User(new User("test2@test2.com", "test2","test2","FR", "F", "F"), 27));
-        listUser.add(new User(new User("test3@test3.com", "test3","test3","FR", "F", "F"), 24));
+        User test  = new User(new User("test@test.com", "test","test","FR", "F", "F"), 25);
+        User test2 = new User(new User("test2@test2.com", "test2","test2","FR", "F", "F"), 27);
+        User test3 = new User(new User("test3@test3.com", "test3","test3","FR", "F", "F"), 24);
+        ArrayList<User> listUser = new ArrayList<>(Arrays.asList(test, test2,test3));
 
         when(userService.getAllUsers()).thenReturn(listUser);
+        when(userService.getMatchUsers("test", 25, User.Sex.F)).thenReturn(Arrays.asList(test2,test3));
         when(userService.getUser(any(String.class))).thenReturn(new User(new User("test@test.com", "test","test","FR", "F", "F"), 25));
-        when(agifyControllerMock.checkMatches("test", "FR")).thenReturn(ResponseEntity.status(HttpStatus.ACCEPTED).body(List.of(new Match("test2", "test2"))));
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/api/matches?userName=test&userCountry=FR"))
                 .andExpect(status().isOk())
