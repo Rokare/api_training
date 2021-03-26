@@ -6,25 +6,29 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AgifyResponseTest {
-    AgifyResponse agifyResponse = new AgifyResponse("test", 25, 300, "FR");
+    private final AgifyResponse agifyResponse;
+
+    AgifyResponseTest() {
+        this.agifyResponse =  new AgifyResponse("test", 25, 300, "FR");
+    }
 
     @Test
     void getName() {
-        Assertions.assertEquals("test", agifyResponse.getName());
+        Assertions.assertEquals("test", this.agifyResponse.getName());
     }
 
     @Test
     void getAge() {
-        Assertions.assertEquals(25, agifyResponse.getAge());
+        Assertions.assertEquals(25, this.agifyResponse.getAge());
     }
 
     @Test
     void getCount() {
-        Assertions.assertEquals(300, agifyResponse.getCount());
+        Assertions.assertEquals(300, this.agifyResponse.getCount());
     }
 
     @Test
     void getCountry_id() {
-        Assertions.assertEquals("FR", agifyResponse.getCountry_id());
+        Assertions.assertEquals("FR", this.agifyResponse.getCountry_id());
     }
 }
