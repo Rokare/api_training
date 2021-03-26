@@ -38,7 +38,7 @@ public class AgifyController {
         if(userService.getAllUsers().add(completeUser)) {
             return ResponseEntity.status(HttpStatus.CREATED).body(completeUser);
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists with this username");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error happened during registration");
     }
 
     @GetMapping(path = "/matches", produces = MediaType.APPLICATION_JSON_VALUE)
