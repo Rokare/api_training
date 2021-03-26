@@ -6,15 +6,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatchTest {
+    private final Match match;
 
-    Match match = new Match("test", "test");
+    MatchTest() {
+        this.match = new Match("test", "test");
+    }
     @Test
     void getName() {
-        Assertions.assertEquals("test", match.getName());
+        Assertions.assertEquals("test", this.match.getName());
     }
 
     @Test
     void getTwitter() {
-        Assertions.assertEquals("test", match.getTwitter());
+        Assertions.assertEquals("test", this.match.getTwitter());
     }
 }

@@ -4,40 +4,46 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
-    User user = new User("test@test.com", "test", "test", "FR","F", "H" );
-    User completeUser = new User(user, 25);
+    private final User user;
+    private final User userWithAge;
+
+    UserTest() {
+        this.user =  new User("test@test.com", "test", "test", "FR","F", "H" );
+        this.userWithAge = new User(user, 25);
+    }
+
     @Test
     void getUserEmail() {
-        Assertions.assertEquals("test@test.com", completeUser.getUserEmail());
+        Assertions.assertEquals("test@test.com", this.user.getUserEmail());
     }
 
     @Test
     void getUserName() {
-        Assertions.assertEquals("test", completeUser.getUserName());
+        Assertions.assertEquals("test", this.user.getUserName());
     }
 
     @Test
     void getUserTwitter() {
-        Assertions.assertEquals("test", completeUser.getUserTwitter());
+        Assertions.assertEquals("test", this.user.getUserTwitter());
     }
 
     @Test
     void getUserCountry() {
-        Assertions.assertEquals("FR", completeUser.getUserCountry());
+        Assertions.assertEquals("FR", this.user.getUserCountry());
     }
 
     @Test
     void getUserSex() {
-        Assertions.assertEquals(User.Sex.F, completeUser.getUserSex());
+        Assertions.assertEquals(User.Sex.F, this.user.getUserSex());
     }
 
     @Test
     void getUserSexPref() {
-        Assertions.assertEquals(User.Sex.H, completeUser.getUserSexPref());
+        Assertions.assertEquals(User.Sex.H, this.user.getUserSexPref());
     }
 
     @Test
     void getAge() {
-        Assertions.assertEquals(25,completeUser.getAge().get());
+        Assertions.assertEquals(25,this.userWithAge.getAge().get());
     }
 }
