@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 @Service
 public class ResponseRepository {
-    private ArrayList<AgifyResponse> responses = new ArrayList<>();
+    private final ArrayList<AgifyResponse> responses = new ArrayList<>();
     public ArrayList<AgifyResponse> getAllUsers() {
         return responses;
     }
